@@ -7,8 +7,7 @@ import org.example.ui.MainMenu;
 
 public class Application {
     static void main() {
-        //TODO: Lanzar la aplicacion
-        try(SeContainer container = SeContainerInitializer.newInstance().initialize()) {
+        try (SeContainer container = SeContainerInitializer.newInstance().initialize()) {
             MainMenu mainMenu = container.select(MainMenu.class).get();
             mainMenu.run();
         }
