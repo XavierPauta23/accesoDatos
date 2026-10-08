@@ -1,7 +1,9 @@
 package org.example.domain.mappers;
 
 import org.example.dao.model.Paciente;
+import org.example.dao.model.Usuario;
 import org.example.domain.dto.PacienteDTO;
+import org.example.domain.dto.PacienteDTOAlta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,18 @@ public class PacienteDTOMapper
                 .nombre(pacienteDTO.getNombre())
                 .fechaNacimiento(pacienteDTO.getFechaNacimiento())
                 .telefono(pacienteDTO.getTelefono())
+                .build();
+    }
+
+    public Paciente toEntity(PacienteDTOAlta pacienteDTO) {
+        return Paciente.builder()
+                .nombre(pacienteDTO.getNombre())
+                .fechaNacimiento(pacienteDTO.getFechaNacimiento())
+                .telefono(pacienteDTO.getTelefono())
+                .usuario(Usuario.builder()
+                        .username(pacienteDTO.getUsername())
+                        .password(pacienteDTO.getPassword())
+                        .build())
                 .build();
     }
 
