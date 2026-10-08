@@ -1,37 +1,68 @@
 package org.example.ui;
 
 import jakarta.inject.Inject;
-import org.example.dao.model.Usuario;
+import lombok.extern.slf4j.Slf4j;
+import org.example.domain.error.AppError;
 
-import java.util.Scanner;
-
+@Slf4j
 public class MainMenu {
 
-    private final UsuarioUi usuarioUi;
+    private final UsuarioUI usuarioUi;
+    private final PacienteUI pacienteUi;
 
-       @Inject
-    public MainMenu(UsuarioUi usuarioUi){
+    @Inject
+    public MainMenu(UsuarioUI usuarioUi, PacienteUI pacienteUi) {
+
         this.usuarioUi = usuarioUi;
+        this.pacienteUi = pacienteUi;
     }
 
-    public void run(){
+    public void run() {
         try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Hospital App");
-            System.out.println("Por favor, introduzca sus credenciales");
+            IO.println("Hospital App");
 
-            boolean logueado = false;
-            while (!logueado){
-                System.out.println("Usuario: ");
-                String username = scanner.nextLine().trim();
-                if(username.isEmpty()) continue;
+            usuarioUi.login();
 
-                System.out.println("Contraseña: ");
-                String password = scanner.nextLine().trim();
-                if(password.isEmpty()) continue;
-                Usuario credencialesUI = new Usuario(username, password);
-                logueado = usuarioUi.login(credencialesUI);
+            int opcion = 0;
+
+            while (opcion != 10) {
+                IO.println("1. Mostrar todos los pacientes");
+                IO.println("2. Añadir paciente");
+                IO.println("10. Salir");
+                IO.println("Introduzca una opción ...");
+
+                String linea = IO.readln();
+                if (linea.isEmpty()) continue;
+                try {
+                    opcion = Integer.parseInt(linea);
+                } catch (NumberFormatException e) {
+                    IO.println("Opción no válida");
+                    continue;
+                }
+
+                switch (opcion) {
+                    case 1:
+                        pacienteUi.getAll();
+                        break;
+                    case 2:
+                        pacienteUi.save();
+                        break;
+                    case 10:
+                        IO.println("Hasta la vista");
+                        break;
+                    default:
+                        IO.println("Opción no válida");
+                }
             }
+
+
+
+        } catch (AppError e) { // Solo errores críticos no manejados
+            System.err.println("Fallo grave: " + e.getMessage());
+            log.error("Fallo grave {}", e.getMessage());
+            System.exit(1);
         }
+
     }
+
 }

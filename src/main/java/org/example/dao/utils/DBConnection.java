@@ -1,6 +1,7 @@
 package org.example.dao.utils;
 
 import jakarta.inject.Inject;
+import org.example.common.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

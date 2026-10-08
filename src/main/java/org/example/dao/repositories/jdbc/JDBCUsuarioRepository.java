@@ -1,11 +1,11 @@
 package org.example.dao.repositories.jdbc;
 
-import org.example.common.SQLQueries;
+import jakarta.inject.Inject;
+import org.example.dao.common.SQLQueries;
 import org.example.dao.model.Usuario;
 import org.example.dao.repositories.UsuarioRepository;
-
-import jakarta.inject.Inject;
 import org.example.dao.utils.DBConnection;
+import org.example.domain.error.AppError;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +46,8 @@ public class JDBCUsuarioRepository implements UsuarioRepository {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            log.error("Error en el login");
+            throw new AppError(e.getMessage());
         }
     }
 
